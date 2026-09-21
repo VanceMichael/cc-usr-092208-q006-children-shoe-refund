@@ -8,6 +8,11 @@
     "sample_id",
     "actors",
     "facts",
+    "identification",
+    "phases",
+    "dedup_rules",
+    "privacy",
+    "reconciliation",
     "constraints"
   ],
   "properties": {
@@ -17,7 +22,7 @@
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 2
     },
     "sample_id": {
       "type": "string",
@@ -27,7 +32,27 @@
       "type": "array",
       "minItems": 2,
       "items": {
-        "type": "string"
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "visibility"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "visibility": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
       }
     },
     "facts": {
@@ -36,6 +61,149 @@
       "items": {
         "type": "string"
       }
+    },
+    "identification": {
+      "type": "object",
+      "required": [
+        "signals",
+        "note"
+      ],
+      "properties": {
+        "signals": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "phases": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string"
+      }
+    },
+    "dedup_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "case",
+          "rule"
+        ],
+        "properties": {
+          "case": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "privacy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "reconciliation": {
+      "type": "object",
+      "required": [
+        "metrics",
+        "invariant",
+        "closure",
+        "example"
+      ],
+      "properties": {
+        "metrics": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "string"
+          }
+        },
+        "invariant": {
+          "type": "string",
+          "minLength": 1
+        },
+        "closure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "example": {
+          "type": "object",
+          "required": [
+            "sold",
+            "reached",
+            "returned",
+            "refunded",
+            "controlled",
+            "uncontrolled",
+            "uncontrolled_reasons"
+          ],
+          "properties": {
+            "sold": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reached": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "returned": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "refunded": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "controlled": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uncontrolled": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "uncontrolled_reasons": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "reason",
+                  "quantity"
+                ],
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     },
     "constraints": {
       "type": "array",
