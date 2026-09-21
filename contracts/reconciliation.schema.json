@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "童鞋召回监管闭环报告",
+  "type": "object",
+  "required": [
+    "recall_id",
+    "sold_units",
+    "identified_units",
+    "notice_target_units",
+    "notices_issued",
+    "notice_attempts",
+    "notified_units",
+    "returned_units",
+    "exchange_recovered_units",
+    "controlled_units",
+    "refunded_units",
+    "refund_only_units",
+    "uncontrolled_units",
+    "uncontrolled_breakdown",
+    "identities_hold",
+    "closure"
+  ],
+  "properties": {
+    "recall_id": { "type": "string", "minLength": 1 },
+    "sold_units": { "type": "integer", "minimum": 0 },
+    "identified_units": { "type": "integer", "minimum": 0 },
+    "notice_target_units": { "type": "integer", "minimum": 0 },
+    "notices_issued": { "type": "integer", "minimum": 0 },
+    "notice_attempts": { "type": "integer", "minimum": 0 },
+    "notified_units": { "type": "integer", "minimum": 0 },
+    "returned_units": { "type": "integer", "minimum": 0 },
+    "exchange_recovered_units": { "type": "integer", "minimum": 0 },
+    "controlled_units": { "type": "integer", "minimum": 0 },
+    "refunded_units": { "type": "integer", "minimum": 0 },
+    "refund_only_units": { "type": "integer", "minimum": 0 },
+    "uncontrolled_units": { "type": "integer", "minimum": 0 },
+    "uncontrolled_breakdown": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "identities_hold": { "type": "boolean" },
+    "closure": {
+      "type": "object",
+      "required": ["can_close", "pending_units", "residual_uncontrolled", "note"],
+      "properties": {
+        "can_close": { "type": "boolean" },
+        "pending_units": { "type": "integer", "minimum": 0 },
+        "residual_uncontrolled": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["unit_id", "reason"],
+            "properties": {
+              "unit_id": { "type": "string" },
+              "reason": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        },
+        "note": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "properties": {
+        "sold_units": {
+          "description": "售出 = 实物控制 + 退款不退货 + 未控制"
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
